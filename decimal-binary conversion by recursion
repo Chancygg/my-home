@@ -1,0 +1,24 @@
+#include<stdio.h>
+void Trans(int d);
+int main(void)
+{
+	int num;
+	printf("PLease enter an integer(q to quit):");
+	while (scanf("%d", &num) == 1)
+	{
+		printf("Binary equivalent:");
+		Trans(num);
+		printf("\n\n");
+		printf("PLease enter an integer(q to quit):");
+	}
+	return 0;
+}
+
+void Trans(int d)
+{
+	char ch;
+	ch = d % 2 + '0';
+	if (d > 1)
+		Trans((d - d % 2) / 2);
+	printf("%c", ch);
+}
