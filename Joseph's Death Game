@@ -1,0 +1,127 @@
+//project.h
+#pragma once
+#include<stdio.h>
+#include<malloc.h>
+#include<string.h>
+
+typedef struct LinkNode
+{
+	char* name;
+	LinkNode* next;
+	int number;
+}*LinkList,LinkNode;
+
+void InsertNode(LinkNode*,char*,int);
+void DeleteNode(LinkList,LinkNode*);
+void Show(LinkList);
+void CreateLKList(LinkList);				/*return number of people*/
+void JDG(LinkList);							/*Joseph's Death Game*/
+
+void InsertNode(LinkNode* ln,char* name,int num)
+{
+	LinkNode* p;
+	p = (LinkList)malloc(sizeof(LinkNode));
+	p->name = (char*)malloc(sizeof(name + 1));
+	strcpy(p->name, name);
+	p->number = num;
+	p->next = NULL;
+	ln->next = p;
+}
+
+void DeleteNode(LinkList list,LinkNode* ln)
+{
+	if (list->number > 0)
+	{
+		printf("Death:[%d]%s\n", ln->next->number, ln->next->name);
+		if (ln->next == list->next)
+			list->next = list->next->next;
+		ln->next = ln->next->next;
+		Show(list);
+		list->number--;
+	}
+	else
+		printf("There's no data in the linklist!");
+}
+
+void Show(LinkList list)
+{
+	LinkNode* p = list->next;
+	printf("Living person now:\n");
+	printf(" [%d]%s", p->number, p->name);
+	p = p->next;
+	while (p != list->next)
+	{
+		printf(" [%d]%s", p->number, p->name);
+		p = p->next;
+	}
+	printf("\n\n");
+}
+
+void CreateLKList(LinkList list)
+{
+	int count = 0;						
+	char ch = 0;
+	char name[20];
+	LinkNode* p = list;
+	printf("Please enter the name of each passenger(for example:A B C....Enter end):\n");
+	while (ch != '\n')
+	{
+		count++;
+		scanf("%s", name);
+		InsertNode(p, name, count);
+		p = p->next;
+		p->next = list->next;
+		ch = getchar();
+	}
+	printf("\n");
+	Show(list);
+	list->number = count;				/*The name field of the head node holds the number of people*/
+}
+
+void JDG(LinkList list)
+{
+	printf("************************************************************************\n");
+	printf("*                         Press enter to start                         *\n");
+	printf("************************************************************************\n");
+	getchar();
+	int key = (list->number) / 2;
+	int i = 0;
+	LinkNode* p = list;
+	while (list->number > key)
+	{
+		for (i = 1; i < 9; i++)
+			p = p->next;
+		DeleteNode(list, p);
+	}
+	printf("************************************************************************\n");
+	printf("*                               Game Over                              *\n");
+	printf("************************************************************************\n");
+	Show(list);
+}
+
+//project.cpp
+#include"project.h"
+
+int main(void)
+{
+	printf("\n************************************************************************\n");
+	printf("*                          Joseph's Death Game                         *\n");
+	printf("*                          [Author]: Chancy Xu                         *\n");
+	printf("************************************************************************\n");
+	LinkList Joseph;
+	Joseph = (LinkList)malloc(sizeof(LinkNode));
+	CreateLKList(Joseph);
+	JDG(Joseph);
+	printf("************************************************************************\n");
+	printf("*        [Student Number]: 022213114  [Class Number]: 0211153          *\n");
+	printf("************************************************************************\n\n");
+	
+	return 0;
+}
+
+
+
+
+
+
+//Zhao Qian Sun Li Zhou Wu Zheng Wang Feng
